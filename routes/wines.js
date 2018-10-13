@@ -7,7 +7,7 @@ var url = "mongodb://localhost:27017/winedb";
 
 var Server = mongo.Server,
     Db = mongo.Db,
-    BSON = mongo.BSONPure;
+    ObjectID = mongo.ObjectID;
 
 var server = new Server('localhost', 27017, {auto_reconnect: true});
 var mongoClient = new MongoClient(server, {});
@@ -21,10 +21,13 @@ mongoClient.connect(function(err, client) {
         assert.equal(null, err);
         var db = client.db('winedb');
         var collection = db.collection('wines');
-        collection.findOne({}, function(err, collection) {
-            if (err) {
+        collection.findOne({'_id':new ObjectID(12345668)}, function(err, item) {
+            if (err || item === null) {
                 console.log("The 'wines' collection doesn't exist. Creating it with sample data...");
-                populateDB();
+                populateDB(db);
+            } else {
+                console.log(item);
+                console.log("The 'wines' collection exist.");
             }
         });
     }
@@ -96,7 +99,7 @@ exports.deleteWine = function(req, res) {
 /*--------------------------------------------------------------------------------------------------------------------*/
 // Populate database with sample data -- Only used once: the first time the application is started.
 // You'd typically not find this code in a real-life app, since the database would already exist.
-var populateDB = function() {
+var populateDB = function(db) {
 
     var wines = [
     {
@@ -317,6 +320,5 @@ var populateDB = function() {
     }];
 
     var collection = db.collection('wines');
-    collection.insert(wines, {safe:true}, function(err, result) {});
-
+    collection.insertMany(wines, {safe:true}, function(err, result) {});
 };
