@@ -7,10 +7,10 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-app.get('/wines', wine.findAll);
-app.get('/wines/:id', wine.findById);
-app.post('/wines', wine.addWine);
-app.put('/wines/:id', wine.updateWine);
-app.delete('/wines/:id', wine.deleteWine);
+router.get('/wines', wine.findAll);
+router.get('/wines/:id', wine.findById);
+router.post('/wines', wine.addWine);
+router.put('/wines/:id', wine.updateWine);
+router.delete('/wines/:id', wine.deleteWine);
 
 module.exports = router;
