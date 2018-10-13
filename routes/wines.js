@@ -10,13 +10,16 @@ var Server = mongo.Server,
     BSON = mongo.BSONPure;
 
 var server = new Server('localhost', 27017, {auto_reconnect: true});
-db = new Db('winedb', server, {safe: true});
+var mongoClient = new MongoClient(server, {});
 
 
-MongoClient.connect(function(err, db) {
+mongoClient.connect(function(err, client) {
+    console.log("Before Connected to 'winedb' database");
+    assert.equal(null, err);
     if(!err) {
         console.log("Connected to 'winedb' database");
         assert.equal(null, err);
+        var db = client.db('winedb');
         var collection = db.collection('wines');
         collection.findOne({}, function(err, collection) {
             if (err) {
