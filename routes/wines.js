@@ -21,7 +21,7 @@ mongoClient.connect(function(err, client) {
         assert.equal(null, err);
         var db = client.db('winedb');
         var collection = db.collection('wines');
-        collection.findOne({'_id':new ObjectID(12345668)}, function(err, item) {
+        collection.findOne({}, function(err, item) {
             if (err || item === null) {
                 console.log("The 'wines' collection doesn't exist. Creating it with sample data...");
                 populateDB(db);
@@ -37,7 +37,7 @@ exports.findById = function(req, res) {
     var id = req.params.id;
     console.log('Retrieving wine: ' + id);
     var collection = db.collection('wines');
-    collection.findOne({'_id':new BSON.ObjectID(id)}, function(err, item) {
+    collection.findOne({'_id':new ObjectID(id)}, function(err, item) {
         if (err) throw err;
         res.send(item);
     });
@@ -71,7 +71,7 @@ exports.updateWine = function(req, res) {
     console.log('Updating wine: ' + id);
     console.log(JSON.stringify(wine));
     var collection = db.collection('wines');
-        collection.update({'_id':new BSON.ObjectID(id)}, wine, {safe:true}, function(err, result) {
+        collection.update({'_id':new ObjectID(id)}, wine, {safe:true}, function(err, result) {
             if (err) {
                 console.log('Error updating wine: ' + err);
                 res.send({'error':'An error has occurred'});
@@ -86,7 +86,7 @@ exports.deleteWine = function(req, res) {
     var id = req.params.id;
     console.log('Deleting wine: ' + id);
     var collection = db.collection('wines');
-        collection.remove({'_id':new BSON.ObjectID(id)}, {safe:true}, function(err, result) {
+        collection.remove({'_id':new ObjectID(id)}, {safe:true}, function(err, result) {
             if (err) {
                 res.send({'error':'An error has occurred - ' + err});
             } else {
@@ -320,5 +320,8 @@ var populateDB = function(db) {
     }];
 
     var collection = db.collection('wines');
-    collection.insertMany(wines, {safe:true}, function(err, result) {});
+    collection.insertMany(wines, {safe:true}, function(err, result) {
+        assert.equal(null, err);
+        console.log("'winedb' database created!");
+      });
 };
