@@ -13,101 +13,107 @@ var server = new Server('localhost', 27017, {auto_reconnect: true});
 var mongoClient = new MongoClient(server, {});
 
 
-mongoClient.connect(function(err, client) {
-    console.log("Before Connected to 'winedb' database");
-    assert.equal(null, err);
-    if(!err) {
-        console.log("Connected to 'winedb' database");
-        assert.equal(null, err);
-        var db = client.db('winedb');
-        var collection = db.collection('wines');
-        collection.findOne({}, function(err, item) {
-            if (err || item === null) {
-                console.log("The 'wines' collection doesn't exist. Creating it with sample data...");
-                populateDB(db);
-            } else {
-                console.log(item);
-                console.log("The 'wines' collection exist.");
-            }
-        });
+mongoClient.connect(async function(err, client) {
+    try {
+      console.log("Before Connected to 'winedb' database");
+      if (err) throw err;
+      console.log("Connected to 'winedb' database");
+      var db = client.db('winedb');
+      var collection = db.collection('wines');
+      let item = await collection.findOne({});
+      if (item === null) {
+          console.log("The 'wines' collection doesn't exist. Creating it with sample data...");
+          populateDB(db);
+      } else {
+          console.log(item);
+          console.log("The 'wines' collection exist.");
+      }
+    } catch (err) {
+        console.log('Error: ' + err);
+        res.send({'error':'An error has occurred'});
     }
 });
 
-exports.findById = function(req, res) {
-    var id = req.params.id;
-    console.log('Retrieving wine: ' + id);
-    var db = mongoClient.db('winedb');
-    var collection = db.collection('wines');
-    collection.findOne({'_id':new ObjectID(id)}, function(err, item) {
-        if (err) throw err;
-        res.send(item);
-    });
+exports.findById = async function(req, res) {
+    try {
+      var id = req.params.id;
+      console.log('Retrieving wine: ' + id);
+      var db = mongoClient.db('winedb');
+      var collection = db.collection('wines');
+      let item = await collection.findOne({'_id':new ObjectID(id)});
+      res.send(item);
+    } catch (err) {
+        console.log('Error: ' + err);
+        res.send({'error':'An error has occurred'});
+    }
 };
 
-exports.findAll = function(req, res) {
-    console.log('Retrieving all wine: ');
-    var db = mongoClient.db('winedb');
-    var collection = db.collection('wines');
-    //var wines = await collection.find();
-    collection.find().toArray(function(err, items) {
-        if (err) throw err;
-        res.send(items);
-    });
+exports.findAll = async function(req, res) {
+    try {
+      console.log('Retrieving all wine: ');
+      var db = mongoClient.db('winedb');
+      var collection = db.collection('wines');
+      let wines = await collection.find();
+      wines.toArray(function(err, items) {
+          res.send(items);
+      });
+    } catch (err) {
+        console.log('Error: ' + err);
+        res.send({'error':'An error has occurred'});
+    }
 };
 
-exports.addWine = function(req, res) {
-    var wine = req.body;
-    console.log('Adding wine: ' + JSON.stringify(wine));
-    var db = mongoClient.db('winedb');
-    var collection = db.collection('wines');
-    collection.insert(wine, {safe:true}, function(err, result) {
-        if (err) {
-            res.send({'error':'An error has occurred'});
-        } else {
-            console.log('Success: ' + JSON.stringify(result[0]));
-            res.send(result[0]);
-        }
-    });
+exports.addWine = async function(req, res) {
+    try {
+        var wine = req.body;
+        console.log('Adding wine: ' + JSON.stringify(wine));
+        var db = mongoClient.db('winedb');
+        var collection = db.collection('wines');
+        let result = await collection.insertOne(wine, {safe:true});
+        console.log('Success: ' + JSON.stringify(result[0]));
+    } catch (err) {
+        console.log('Error: ' + err);
+        res.send({'error':'An error has occurred'});
+    }
 }
 
-exports.updateWine = function(req, res) {
-    var id = req.params.id;
-    var wine = req.body;
-    delete wine._id;
-    console.log('Updating wine: ' + id);
-    console.log(JSON.stringify(wine));
-    var db = mongoClient.db('winedb');
-    var collection = db.collection('wines');
-        collection.update({'_id':new ObjectID(id)}, wine, {safe:true}, function(err, result) {
-            if (err) {
-                console.log('Error updating wine: ' + err);
-                res.send({'error':'An error has occurred'});
-            } else {
-                console.log('' + result + ' document(s) updated');
-                res.send(wine);
-            }
-        });
+exports.updateWine = async function(req, res) {
+    try {
+      var id = req.params.id;
+      var wine = req.body;
+      delete wine._id;
+      console.log('Updating wine: ' + id);
+      console.log(JSON.stringify(wine));
+      var db = mongoClient.db('winedb');
+      var collection = db.collection('wines');
+      let result = await collection.update({'_id':new ObjectID(id)}, wine, {safe:true});
+      console.log('' + result + ' document(s) updated');
+      res.send(wine);
+    } catch (err) {
+        console.log('Error: ' + err);
+        res.send({'error':'An error has occurred'});
+    }
 }
 
-exports.deleteWine = function(req, res) {
-    var id = req.params.id;
-    console.log('Deleting wine: ' + id);
-    var db = mongoClient.db('winedb');
-    var collection = db.collection('wines');
-        collection.remove({'_id':new ObjectID(id)}, {safe:true}, function(err, result) {
-            if (err) {
-                res.send({'error':'An error has occurred - ' + err});
-            } else {
-                console.log('' + result + ' document(s) deleted');
-                res.send(req.body);
-            }
-        });
+exports.deleteWine = async function(req, res) {
+    try {
+      var id = req.params.id;
+      console.log('Deleting wine: ' + id);
+      var db = mongoClient.db('winedb');
+      var collection = db.collection('wines');
+      let result = await collection.remove({'_id':new ObjectID(id)}, {safe:true});
+      console.log('' + result + ' document(s) deleted');
+      res.send(req.body);
+    } catch (err) {
+        console.log('Error: ' + err);
+        res.send({'error':'An error has occurred'});
+    }
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 // Populate database with sample data -- Only used once: the first time the application is started.
 // You'd typically not find this code in a real-life app, since the database would already exist.
-var populateDB = function(db) {
+var populateDB = async function(db) {
 
     var wines = [
     {
@@ -328,8 +334,6 @@ var populateDB = function(db) {
     }];
 
     var collection = db.collection('wines');
-    collection.insertMany(wines, {safe:true}, function(err, result) {
-        assert.equal(null, err);
-        console.log("'winedb' database created!");
-      });
+    let result = await collection.insertMany(wines, {safe:true});
+    console.log("'winedb' database created!");
 };
