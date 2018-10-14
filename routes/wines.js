@@ -12,7 +12,6 @@ var assert = require('assert');
 var MongoClient = mongo.MongoClient;
 
 var Server = mongo.Server,
-    Db = mongo.Db,
     ObjectID = mongo.ObjectID;
 
 var server = new Server('localhost', 27017, {auto_reconnect: true});
