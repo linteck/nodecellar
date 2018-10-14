@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
@@ -35,6 +37,23 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+io.on('connection', function (socket) {
+    console.log("Socket connected");
+
+    socket.on('message', function (message) {
+        console.log("Got message: " + message);
+        ip = socket.handshake.address.address;
+        url = message;
+        io.sockets.emit('pageview', { 'connections': Object.keys(io.connected).length, 'ip': '***.***.***.' + ip.substring(ip.lastIndexOf('.') + 1), 'url': url, 'xdomain': socket.handshake.xdomain, 'timestamp': new Date()});
+    });
+
+    socket.on('disconnect', function () {
+        console.log("Socket disconnected");
+        io.sockets.emit('pageview', { 'connections': Object.keys(io.connected).length});
+    });
+
 });
 
 module.exports = app;
