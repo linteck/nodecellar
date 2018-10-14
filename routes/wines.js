@@ -1,9 +1,15 @@
+var express = require('express');
+var router = express.Router();
+
+router.get('/', findAll);
+router.get('/:id', findById);
+router.post('/', addWine);
+router.put('/:id', updateWine);
+router.delete('/:id', deleteWine);
+
 var mongo = require('mongodb');
 var assert = require('assert');
-
 var MongoClient = mongo.MongoClient;
-
-var url = "mongodb://localhost:27017/winedb";
 
 var Server = mongo.Server,
     Db = mongo.Db,
@@ -34,7 +40,7 @@ mongoClient.connect(async function(err, client) {
     }
 });
 
-exports.findById = async function(req, res) {
+async function findById(req, res) {
     try {
       var id = req.params.id;
       console.log('Retrieving wine: ' + id);
@@ -48,7 +54,7 @@ exports.findById = async function(req, res) {
     }
 };
 
-exports.findAll = async function(req, res) {
+async function findAll(req, res) {
     try {
       console.log('Retrieving all wine: ');
       var db = mongoClient.db('winedb');
@@ -63,7 +69,7 @@ exports.findAll = async function(req, res) {
     }
 };
 
-exports.addWine = async function(req, res) {
+async function addWine(req, res) {
     try {
         var wine = req.body;
         console.log('Adding wine: ' + JSON.stringify(wine));
@@ -77,7 +83,7 @@ exports.addWine = async function(req, res) {
     }
 }
 
-exports.updateWine = async function(req, res) {
+async function updateWine(req, res) {
     try {
       var id = req.params.id;
       var wine = req.body;
@@ -95,7 +101,7 @@ exports.updateWine = async function(req, res) {
     }
 }
 
-exports.deleteWine = async function(req, res) {
+async function deleteWine(req, res) {
     try {
       var id = req.params.id;
       console.log('Deleting wine: ' + id);
@@ -113,7 +119,7 @@ exports.deleteWine = async function(req, res) {
 /*--------------------------------------------------------------------------------------------------------------------*/
 // Populate database with sample data -- Only used once: the first time the application is started.
 // You'd typically not find this code in a real-life app, since the database would already exist.
-var populateDB = async function(db) {
+async function populateDB(db) {
 
     var wines = [
     {
@@ -337,3 +343,5 @@ var populateDB = async function(db) {
     let result = await collection.insertMany(wines, {safe:true});
     console.log("'winedb' database created!");
 };
+
+module.exports = router;
