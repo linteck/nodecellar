@@ -36,6 +36,7 @@ mongoClient.connect(function(err, client) {
 exports.findById = function(req, res) {
     var id = req.params.id;
     console.log('Retrieving wine: ' + id);
+    var db = mongoClient.db('winedb');
     var collection = db.collection('wines');
     collection.findOne({'_id':new ObjectID(id)}, function(err, item) {
         if (err) throw err;
@@ -44,8 +45,12 @@ exports.findById = function(req, res) {
 };
 
 exports.findAll = function(req, res) {
+    console.log('Retrieving all wine: ');
+    var db = mongoClient.db('winedb');
     var collection = db.collection('wines');
+    //var wines = await collection.find();
     collection.find().toArray(function(err, items) {
+        if (err) throw err;
         res.send(items);
     });
 };
@@ -53,6 +58,7 @@ exports.findAll = function(req, res) {
 exports.addWine = function(req, res) {
     var wine = req.body;
     console.log('Adding wine: ' + JSON.stringify(wine));
+    var db = mongoClient.db('winedb');
     var collection = db.collection('wines');
     collection.insert(wine, {safe:true}, function(err, result) {
         if (err) {
@@ -70,6 +76,7 @@ exports.updateWine = function(req, res) {
     delete wine._id;
     console.log('Updating wine: ' + id);
     console.log(JSON.stringify(wine));
+    var db = mongoClient.db('winedb');
     var collection = db.collection('wines');
         collection.update({'_id':new ObjectID(id)}, wine, {safe:true}, function(err, result) {
             if (err) {
@@ -85,6 +92,7 @@ exports.updateWine = function(req, res) {
 exports.deleteWine = function(req, res) {
     var id = req.params.id;
     console.log('Deleting wine: ' + id);
+    var db = mongoClient.db('winedb');
     var collection = db.collection('wines');
         collection.remove({'_id':new ObjectID(id)}, {safe:true}, function(err, result) {
             if (err) {
