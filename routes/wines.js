@@ -30,7 +30,6 @@ mongoClient.connect(async function(err, client) {
           console.log("The 'wines' collection doesn't exist. Creating it with sample data...");
           populateDB(db);
       } else {
-          console.log(item);
           console.log("The 'wines' collection exist.");
       }
     } catch (err) {
