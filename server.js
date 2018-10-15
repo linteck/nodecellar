@@ -1,5 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
+var cons = require('consolidate');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -12,14 +13,17 @@ var winesRouter = require('./routes/wines');
 
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+// assign the swig engine to .html files
+app.engine('pug', cons.pug);
 app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public'), {'index': ['index.html', 'index.htm']}));
+//app.use(express.static(path.join(__dirname, 'public'), {'index': ['index.html', 'index.htm']}));
+app.use(express.static(path.join(__dirname, 'public'), {'index': false}));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
