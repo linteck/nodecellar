@@ -1,0 +1,49 @@
+doctype html
+html(lang='en') 
+    head
+      title Node Cellar
+      meta(charset="utf-8")
+      meta(name="viewport" content="width=device-width, initial-scale=1.0")
+      meta(name="description" content="")
+      meta(name="author" content="")
+
+      link(href="css/bootstrap.css" rel="stylesheet")
+      link(href="css/bootstrap-responsive.css" rel="stylesheet")
+      link(href="css/styles.css" rel="stylesheet")
+
+      script(src="http://use.edgefonts.net/andika.js")
+      script(src="http://use.edgefonts.net/arvo.js")
+
+      script("socket.io/socket.io.js")
+      script(type="text/javascript" src="js/socket_io_call.js")
+    body
+
+      div.header
+
+      div.container
+        div.row-fluid
+          div(id="content" class="span12>")
+      footer(class="footer")
+        <p class="pull-right"><a href="#">Back Home</a></p>
+        <p>Built as a sample application with <a href="http://documentcloud.github.com/backbone/">Backbone.js</a>,
+        <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a>,
+        <a href="http://nodejs.org/">Node.js</a>,
+        <a href="http://expressjs.com/">Express</a>,
+        and <a href="http://www.mongodb.org/">MongoDB</a> by
+        <a href="http://coenraets.org" target="_blank">Christophe Coenraets</a>.<br/>
+        The source code for this application is available in <a href="#">this repository</a> on GitHub.</p>
+
+      script(src="lib/jquery-1.8.2.min.js")
+      script(src="lib/underscore-min.js")
+      script(src="lib/backbone-min.js")
+      script(src="lib/bootstrap.min.js")
+
+      script(src="js/utils.js")
+      script(src="js/models/models.js")
+      script(src="js/views/paginator.js")
+      script(src="js/views/header.js")
+      script(src="js/views/home.js")
+      script(src="js/views/winelist.js")
+      script(src="js/views/winedetails.js")
+      script(src="js/views/about.js")
+      script(src="js/main.js")
