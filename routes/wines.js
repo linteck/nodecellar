@@ -33,8 +33,8 @@ mongoClient.connect(async function(err, client) {
           console.log("The 'wines' collection exist.");
       }
     } catch (err) {
-        console.log('Error: ' + err);
-        res.send({'error':'An error has occurred'});
+      console.log('Error: ' + err);
+      res.render('error', { error: err, title:"Error" });
     }
 });
 
@@ -47,8 +47,8 @@ async function findById(req, res) {
       let item = await collection.findOne({'_id':new ObjectID(id)});
       res.send(item);
     } catch (err) {
-        console.log('Error: ' + err);
-        res.send({'error':'An error has occurred'});
+      console.log('Error: ' + err);
+      res.render('error', { error: err, title:"Error" });
     }
 };
 
@@ -62,8 +62,8 @@ async function findAll(req, res) {
           res.send(items);
       });
     } catch (err) {
-        console.log('Error: ' + err);
-        res.send({'error':'An error has occurred'});
+      console.log('Error: ' + err);
+      res.render('error', { error: err, title:"Error" });
     }
 };
 
@@ -76,8 +76,8 @@ async function addWine(req, res) {
         let result = await collection.insertOne(wine, {safe:true});
         console.log('Success: ' + JSON.stringify(result[0]));
     } catch (err) {
-        console.log('Error: ' + err);
-        res.send({'error':'An error has occurred'});
+      console.log('Error: ' + err);
+      res.render('error', { error: err, title:"Error" });
     }
 }
 
@@ -94,8 +94,8 @@ async function updateWine(req, res) {
       console.log('' + result + ' document(s) updated');
       res.send(wine);
     } catch (err) {
-        console.log('Error: ' + err);
-        res.send({'error':'An error has occurred'});
+      console.log('Error: ' + err);
+      res.render('error', { error: err, title:"Error" });
     }
 }
 
@@ -109,8 +109,8 @@ async function deleteWine(req, res) {
       console.log('' + result + ' document(s) deleted');
       res.send(req.body);
     } catch (err) {
-        console.log('Error: ' + err);
-        res.send({'error':'An error has occurred'});
+      console.log('Error: ' + err);
+      res.render('error', { error: err, title:"Error" });
     }
 }
 
