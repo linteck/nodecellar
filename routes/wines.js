@@ -58,9 +58,8 @@ async function findAll(req, res) {
       var db = mongoClient.db('winedb');
       var collection = db.collection('wines');
       let wines = await collection.find();
-      wines.toArray(function(err, items) {
-          res.send(items);
-      });
+      let items = await wines.toArray();
+      res.send(items);
     } catch (err) {
       console.log('Error: ' + err);
       res.render('error', { error: err, title:"Error" });
