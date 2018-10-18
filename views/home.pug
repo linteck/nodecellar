@@ -13,6 +13,9 @@ html(lang='en')
 
       script(src="http://use.edgefonts.net/andika.js")
       script(src="http://use.edgefonts.net/arvo.js")
+      script(src="https://unpkg.com/react@16/umd/react.development.js" crossorigin)
+      script(src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin)
+      script(src="js/like_button.js")
 
       script("socket.io/socket.io.js")
       script(type="text/javascript" src="js/socket_io_call.js")
@@ -20,6 +23,7 @@ html(lang='en')
 
       div.header
 
+      div(id="like_button_container")
       div.container
         div.row-fluid
           div(id="content" class="span12>")
