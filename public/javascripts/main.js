@@ -1,3 +1,4 @@
+
 var AppRouter = Backbone.Router.extend({
 
     routes: {
@@ -55,15 +56,15 @@ var AppRouter = Backbone.Router.extend({
 
 });
 
-const domContainer = document.querySelector('#like_button_container');
-cosole.log(domContainer);
-const model = new Backbone.Model({ firstName: 'Frodo' });
-cosole.log(model);
 utils.loadTemplate(['HomeView', 'HeaderView', 'WineView', 'WineListItemView', 'AboutView'], function() {
-    app = new AppRouter();
-    Backbone.history.start();
+    var app = new AppRouter();
+    const domContainer = document.querySelector('#like_button_container');
+    console.log(domContainer);
+    const model = new Backbone.Model({ firstName: 'Frodo' });
+    console.log(model);
     ReactDOM.render(
       <Example model={model} />,
       domContainer
     );
+    Backbone.history.start();
 });
