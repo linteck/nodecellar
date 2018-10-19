@@ -5,12 +5,14 @@
   "main": "server.js",
   "scripts": {
     "start": "node ./bin/www",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel public/javascripts -d public/js"
   },
   "author": "Linteck",
   "license": "ISC",
   "private": true,
   "dependencies": {
+    "@babel/polyfill": "^7.0.0",
     "consolidate": "^0.15.1",
     "cookie-parser": "^1.4.3",
     "express": "*",
@@ -24,6 +26,10 @@
     "npm": "*"
   },
   "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
     "babel-cli": "^6.26.0"
   }
 }
