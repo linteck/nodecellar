@@ -55,9 +55,15 @@ var AppRouter = Backbone.Router.extend({
 
 });
 
+const domContainer = document.querySelector('#like_button_container');
+cosole.log(domContainer);
+const model = new Backbone.Model({ firstName: 'Frodo' });
+cosole.log(model);
 utils.loadTemplate(['HomeView', 'HeaderView', 'WineView', 'WineListItemView', 'AboutView'], function() {
     app = new AppRouter();
     Backbone.history.start();
-    const domContainer = document.querySelector('#like_button_container');
-    ReactDOM.render(e(LikeButton), domContainer);
+    ReactDOM.render(
+      <Example model={model} />,
+      domContainer
+    );
 });
