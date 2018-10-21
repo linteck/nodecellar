@@ -1,3 +1,7 @@
+function RWineView(props) {
+  return 
+}
+
 window.WineView = Backbone.View.extend({
 
     initialize: function () {
@@ -66,6 +70,9 @@ window.WineView = Backbone.View.extend({
             success: function () {
                 alert('Wine deleted successfully');
                 window.history.back();
+            },
+            error: function () {
+                utils.showAlert('Error', 'An error occurred while trying to delete this item', 'alert-error');
             }
         });
         return false;

@@ -1,4 +1,16 @@
 
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Button from '@material-ui/core/Button';
+
+function App() {
+  return (
+    <Button variant="contained" color="primary">
+      Hello World
+    </Button>
+  );
+}
+
 var AppRouter = Backbone.Router.extend({
 
     routes: {
@@ -57,13 +69,17 @@ var AppRouter = Backbone.Router.extend({
 });
 
 utils.loadTemplate(['HomeView', 'HeaderView', 'WineView', 'WineListItemView', 'AboutView'], function() {
-    var app = new AppRouter();
+    new AppRouter();
     const domContainer = document.querySelector('#like_button_container');
     console.log(domContainer);
     const model = new Backbone.Model({ firstName: 'Frodo' });
     console.log(model);
+    // ReactDOM.render(
+    //   <Example model={model} />,
+    //   domContainer
+    // );
     ReactDOM.render(
-      <Example model={model} />,
+      <App />, 
       domContainer
     );
     Backbone.history.start();
