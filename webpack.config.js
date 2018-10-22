@@ -3,9 +3,15 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
-  entry: './public/js/main.js',
+  entry: './public/javascripts/main.js',
   devtool: 'inline-source-map',
   mode: 'development',
+  resolve: {
+    modules: [
+      path.resolve(__dirname, "public"), 
+      "node_modules"
+    ]
+  },
   plugins: [
     // new CleanWebpackPlugin(['public/js']),
     new HtmlWebpackPlugin({

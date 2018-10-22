@@ -1,4 +1,5 @@
 'use strict';
+import Backbone from 'backbone';
 
 function connectToBackboneModel(WrappedComponent) {
   return class BackboneComponent extends React.Component {
