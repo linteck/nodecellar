@@ -6,13 +6,13 @@ import * as $ from 'jquery';
 import * as _ from 'underscore';
 import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
 
-import "javascripts/like_button.js";
+import "javascripts/backbonecomp.js";
 import "javascripts/utils.js";
 import "javascripts/models/models.js";
 import "javascripts/views/paginator.js";
 import "javascripts/views/header.js";
 import "javascripts/views/home.js";
-import "javascripts/views/winelist.js";
+import ExBcWineListView from "javascripts/views/winelist.js";
 import "javascripts/views/winedetails.js";
 import "javascripts/views/about.js";
 import "javascripts/socket_io_call.js"
@@ -53,7 +53,11 @@ var AppRouter = Backbone.Router.extend({
         var p = page ? parseInt(page, 10) : 1;
         var wineList = new WineCollection();
         wineList.fetch({success: function(){
-            $("#content").html(new WineListView({model: wineList, page: p}).el);
+          console.log(wineList.models);
+          ReactDOM.render(
+              <ExBcWineListView model={wineList} page={p} />,
+              document.getElementById('content')
+          );
         }});
         this.headerView.selectMenuItem('home-menu');
     },
@@ -82,16 +86,9 @@ var AppRouter = Backbone.Router.extend({
 
 });
 
-utils.loadTemplate(['HomeView', 'HeaderView', 'WineView', 'WineListItemView', 'AboutView'], function() {
+utils.loadTemplate(['HomeView', 'HeaderView', 'WineView', 'AboutView'], function() {
     new AppRouter();
     const domContainer = document.querySelector('#like_button_container');
-    console.log(domContainer);
-    const model = new Backbone.Model({ firstName: 'Frodo' });
-    console.log(model);
-    // ReactDOM.render(
-    //   <Example model={model} />,
-    //   domContainer
-    // );
     ReactDOM.render(
       <App />, 
       domContainer

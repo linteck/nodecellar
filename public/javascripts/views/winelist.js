@@ -1,43 +1,84 @@
 import Backbone from 'backbone';
 import * as $ from 'jquery';
 import * as _ from 'underscore';
+import React from 'react';
+import {connectToBackboneCollection, connectToBackboneModel} from "javascripts/backbonecomp.js";
 
-window.WineListView = Backbone.View.extend({
+function WineItem(props) {
+  // Correct! There is no need to specify the key here:
+  let picture;
 
-    initialize: function () {
-        this.render();
-    },
+  if (props.picture) {
+    picture = <img src="pics/generic.jpg" height="150" width="125" alt=""/>;
+  } else{
+    picture = <img src="pics/{props.picture}" height="150" width="125" alt=""/>;
+  }
+  return (
+    <a href="#wines/{props._id}" className="thumbnail plain" style={{'textAlign': "center"}}>
+      {picture}
+        <h5>props.name</h5>
+          {props.year} {props.grapes }<br/>
+        <i className="icon-globe"></i> 
+          {props.region}, {props.country}
+    </a>
+  );
+}
 
-    render: function () {
-        var wines = this.model.models;
-        var len = wines.length;
-        var startPos = (this.options.page - 1) * 8;
-        var endPos = Math.min(startPos + 8, len);
+const BcWineItem = connectToBackboneModel (WineItem);
 
-        $(this.el).html('<ul class="thumbnails"></ul>');
+function WineListView(props) {
+  var wines = props.model.models;
+  var len = wines.length;
+  var startPos = (props.page - 1) * 8;
+  var endPos = Math.min(startPos + 8, len);
+  var wineSlice = wines.slice(startPos, endPos)
+  console.log(wineSlice);
+  const listItems = wineSlice.map((wine) =>
+    // Correct! Key should be specified inside the array.
+    <BcWineItem key={wine.id}
+              model={wine} />
+  );
+  return (
+    <ul className="thumbnails">
+      {listItems}
+    </ul>
+  );
+}
 
-        for (var i = startPos; i < endPos; i++) {
-            $('.thumbnails', this.el).append(new WineListItemView({model: wines[i]}).render().el);
-        }
+const BcWineListView = connectToBackboneCollection (WineListView);
 
-        $(this.el).append(new Paginator({model: this.model, page: this.options.page}).render().el);
+export default function ExBcWineListView (props) {
+  console.log(props.model);
+  return (
+    <BcWineListView
+      model={props.model}
+      page={props.page}
+    />
+  );
+}
 
-        return this;
-    }
-});
 
-window.WineListItemView = Backbone.View.extend({
+// window.WineListView = Backbone.View.extend({
 
-    tagName: "li",
+//     initialize: function () {
+//         this.render();
+//     },
 
-    initialize: function () {
-        this.model.bind("change", this.render, this);
-        this.model.bind("destroy", this.close, this);
-    },
+//     render: function () {
+//         var wines = this.model.models;
+//         var len = wines.length;
+//         var startPos = (this.options.page - 1) * 8;
+//         var endPos = Math.min(startPos + 8, len);
 
-    render: function () {
-        $(this.el).html(this.template(this.model.toJSON()));
-        return this;
-    }
+//         $(this.el).html('<ul class="thumbnails"></ul>');
 
-});
+//         for (var i = startPos; i < endPos; i++) {
+//             $('.thumbnails', this.el).append(new WineListItemView({model: wines[i]}).render().el);
+//         }
+
+//         $(this.el).append(new Paginator({model: this.model, page: this.options.page}).render().el);
+
+//         return this;
+//     }
+// });
+
