@@ -4,7 +4,8 @@ import Button from '@material-ui/core/Button';
 import Backbone from 'backbone';
 import * as $ from 'jquery';
 import * as _ from 'underscore';
-import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
+// This import is WRONG!!! It makes css works strange!
+//import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
 
 import "javascripts/backbonecomp.js";
 import "javascripts/utils.js";
@@ -88,10 +89,10 @@ var AppRouter = Backbone.Router.extend({
 
 utils.loadTemplate(['HomeView', 'HeaderView', 'WineView', 'AboutView'], function() {
     new AppRouter();
-    const domContainer = document.querySelector('#like_button_container');
-    ReactDOM.render(
-      <App />, 
-      domContainer
-    );
+    // const domContainer = document.querySelector('#like_button_container');
+    // ReactDOM.render(
+    //   <App />, 
+    //   domContainer
+    // );
     Backbone.history.start();
 });

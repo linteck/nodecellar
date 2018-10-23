@@ -26,8 +26,10 @@ export default function Paginator(props) {
     <PageItem key={id} id={id} activeId={activeId}/>
   );
   return (
-    <ul className="pagination pagination-centered">
-      {listItems}
-    </ul>
+    <div className="pagination pagination-centered">
+      <ul>
+        {listItems}
+      </ul>
+    </div>
   );
 }
