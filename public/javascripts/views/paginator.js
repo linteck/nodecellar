@@ -1,28 +1,33 @@
 import Backbone from 'backbone';
 import * as $ from 'jquery';
 import * as _ from 'underscore';
+import React from 'react';
 
-window.Paginator = Backbone.View.extend({
+function PageItem(props) {
+  let className;
+  if (props.activeId === props.id) {
+    className='active';
+  } else {
+    className='inactive';
+  }
+  return (
+      <li className={className}>
+        <a href={'#wines/page/'+ props.id}> {props.id}</a>
+      </li>
+  )
+}
 
-    className: "pagination pagination-centered",
+export default function Paginator(props) {
+  var pageCount = Math.ceil(props.length / props.perPage);
+  var pages = _.range(1, pageCount+1);
+  var activeId = 1;
 
-    initialize:function () {
-        this.model.bind("reset", this.render, this);
-        this.render();
-    },
-
-    render:function () {
-
-        var items = this.model.models;
-        var len = items.length;
-        var pageCount = Math.ceil(len / 8);
-
-        $(this.el).html('<ul />');
-
-        for (var i=0; i < pageCount; i++) {
-            $('ul', this.el).append("<li" + ((i + 1) === this.options.page ? " class='active'" : "") + "><a href='#wines/page/"+(i+1)+"'>" + (i+1) + "</a></li>");
-        }
-
-        return this;
-    }
-});
+  const listItems = pages.map((id) =>
+    <PageItem key={id} id={id} activeId={activeId}/>
+  );
+  return (
+    <ul className="pagination pagination-centered">
+      {listItems}
+    </ul>
+  );
+}
