@@ -47,7 +47,7 @@ function WineListView(props) {
         <ul className="thumbnails">
           {listItems}
         </ul>
-        <Paginator length={len} perPage={perPage}>
+        <Paginator length={len} perPage={perPage} activePage={props.page}>
         </Paginator>
       </div>
   );

@@ -20,7 +20,7 @@ function PageItem(props) {
 export default function Paginator(props) {
   var pageCount = Math.ceil(props.length / props.perPage);
   var pages = _.range(1, pageCount+1);
-  var activeId = 1;
+  var activeId = props.activePage;
 
   const listItems = pages.map((id) =>
     <PageItem key={id} id={id} activeId={activeId}/>
