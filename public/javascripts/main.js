@@ -1,9 +1,21 @@
-
-import "javascripts/like_button.js";
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Button from '@material-ui/core/Button';
+import Backbone from 'backbone';
+import * as $ from 'jquery';
+import * as _ from 'underscore';
+import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
+
+import "javascripts/like_button.js";
+import "javascripts/utils.js";
+import "javascripts/models/models.js";
+import "javascripts/views/paginator.js";
+import "javascripts/views/header.js";
+import "javascripts/views/home.js";
+import "javascripts/views/winelist.js";
+import "javascripts/views/winedetails.js";
+import "javascripts/views/about.js";
+import "javascripts/socket_io_call.js"
 
 function App() {
   return (

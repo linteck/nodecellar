@@ -1,3 +1,7 @@
+import Backbone from 'backbone';
+import * as $ from 'jquery';
+import * as _ from 'underscore';
+
 window.Wine = Backbone.Model.extend({
 
     urlRoot: "/wines",

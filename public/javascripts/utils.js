@@ -1,3 +1,6 @@
+import * as $ from 'jquery';
+import * as _ from 'underscore';
+
 window.utils = {
 
     // Asynchronously load templates located in separate .html files

@@ -1,3 +1,7 @@
+import Backbone from 'backbone';
+import * as $ from 'jquery';
+import * as _ from 'underscore';
+
 window.WineListView = Backbone.View.extend({
 
     initialize: function () {
