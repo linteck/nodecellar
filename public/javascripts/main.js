@@ -1,22 +1,25 @@
+import 'typeface-roboto';
+// This import is WRONG!!! It makes css works strange!
+//import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Button from '@material-ui/core/Button';
 import Backbone from 'backbone';
 import * as $ from 'jquery';
 import * as _ from 'underscore';
-// This import is WRONG!!! It makes css works strange!
-//import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
 
-import "javascripts/backbonecomp.js";
-import "javascripts/utils.js";
-import "javascripts/models/models.js";
-import "javascripts/views/paginator.js";
-import "javascripts/views/header.js";
-import "javascripts/views/home.js";
-import ExBcWineListView from "javascripts/views/winelist.js";
-import "javascripts/views/winedetails.js";
-import "javascripts/views/about.js";
-import "javascripts/socket_io_call.js"
+import 'javascripts/backbonecomp.js';
+import 'javascripts/utils.js';
+import 'javascripts/models/models.js';
+import 'javascripts/views/paginator.js';
+import 'javascripts/views/header.js';
+import 'javascripts/views/home.js';
+import ExBcWineListView from 'javascripts/views/winelist.js';
+import 'javascripts/views/winedetails.js';
+import 'javascripts/views/about.js';
+import 'javascripts/socket_io_call.js'
+import {ExBcFooter} from 'javascripts/views/footer.js';
 
 function App() {
   return (
@@ -94,5 +97,10 @@ utils.loadTemplate(['HomeView', 'HeaderView', 'WineView', 'AboutView'], function
     //   <App />, 
     //   domContainer
     // );
+    const footerContainer = document.querySelector('#footer1');
+    ReactDOM.render(
+      <ExBcFooter />, 
+      footerContainer
+    );
     Backbone.history.start();
 });

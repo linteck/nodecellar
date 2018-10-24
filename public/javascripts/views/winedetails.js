@@ -2,8 +2,41 @@ import Backbone from 'backbone';
 import * as $ from 'jquery';
 import * as _ from 'underscore';
 
-function RWineView(props) {
-  return 
+import {connectToBackboneCollection, connectToBackboneModel} from "javascripts/backbonecomp.js";
+import Paginator from "javascripts/views/paginator.js";
+
+function WineView(props) {
+  // Correct! There is no need to specify the key here:
+  let picture;
+
+  if (props.picture) {
+    picture = <img src={"pics/" + props.picture} height="150" width="125" alt=""/>;
+  } else{
+    picture = <img src="pics/generic.jpg" height="150" width="125" alt=""/>;
+  }
+  return (
+    <li>
+      <a href={"#wines/" + props._id} className="thumbnail plain" style={{'textAlign': "center"}}>
+        {picture}
+          <h5>{props.name}</h5>
+            {props.year} {props.grapes }<br/>
+          <i className="icon-globe"></i> 
+            {props.region}, {props.country}
+      </a>
+    </li>
+  );
+}
+
+const BcWineView= connectToBackboneModel (WineView);
+
+export default function ExBcWineView (props) {
+  console.log(props.model);
+  return (
+        <BcWineView
+          model={props.model}
+          page={props.page}
+        />
+  );
 }
 
 window.WineView = Backbone.View.extend({
