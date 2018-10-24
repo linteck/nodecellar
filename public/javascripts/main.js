@@ -15,7 +15,8 @@ import 'javascripts/models/models.js';
 import 'javascripts/views/paginator.js';
 import 'javascripts/views/header.js';
 import 'javascripts/views/home.js';
-import ExBcWineListView from 'javascripts/views/winelist.js';
+import {ExBcWineListView} from 'javascripts/views/winelist.js';
+import {ExBcWineView} from 'javascripts/views/winedetails2.js';
 import 'javascripts/views/winedetails.js';
 import 'javascripts/views/about.js';
 import 'javascripts/socket_io_call.js'
@@ -49,6 +50,10 @@ var AppRouter = Backbone.Router.extend({
         if (!this.homeView) {
             this.homeView = new HomeView();
         }
+        let nd = document.getElementById('content');
+        if (nd) {
+          ReactDOM.unmountComponentAtNode(nd);
+        }
         $('#content').html(this.homeView.el);
         this.headerView.selectMenuItem('home-menu');
     },
@@ -58,6 +63,10 @@ var AppRouter = Backbone.Router.extend({
         var wineList = new WineCollection();
         wineList.fetch({success: function(){
           console.log(wineList.models);
+          let nd = document.getElementById('content');
+          if (nd) {
+            ReactDOM.unmountComponentAtNode(nd);
+          }
           ReactDOM.render(
               <ExBcWineListView model={wineList} page={p} />,
               document.getElementById('content')
@@ -69,14 +78,28 @@ var AppRouter = Backbone.Router.extend({
     wineDetails: function (id) {
         var wine = new Wine({_id: id});
         wine.fetch({success: function(){
-            $("#content").html(new WineView({model: wine}).el);
+          let nd = document.getElementById('content');
+          if (nd) {
+            ReactDOM.unmountComponentAtNode(nd);
+          }
+          ReactDOM.render(
+              <ExBcWineView model={wine}/>,
+              document.getElementById('content')
+          );
         }});
         this.headerView.selectMenuItem();
     },
 
 	addWine: function() {
         var wine = new Wine();
-        $('#content').html(new WineView({model: wine}).el);
+        let nd = document.getElementById('content');
+        if (nd) {
+          ReactDOM.unmountComponentAtNode(nd);
+        }
+        ReactDOM.render(
+            <ExBcWineView model={wine}/>,
+            document.getElementById('content')
+        );
         this.headerView.selectMenuItem('add-menu');
 	},
 
@@ -90,7 +113,7 @@ var AppRouter = Backbone.Router.extend({
 
 });
 
-utils.loadTemplate(['HomeView', 'HeaderView', 'WineView', 'AboutView'], function() {
+utils.loadTemplate(['HomeView', 'HeaderView', 'AboutView'], function() {
     new AppRouter();
     // const domContainer = document.querySelector('#like_button_container');
     // ReactDOM.render(

@@ -55,7 +55,7 @@ function WineListView(props) {
 
 const BcWineListView = connectToBackboneCollection (WineListView);
 
-export default function ExBcWineListView (props) {
+export function ExBcWineListView (props) {
   console.log(props.model);
   return (
         <BcWineListView

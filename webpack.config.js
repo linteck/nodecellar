@@ -13,7 +13,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new CleanWebpackPlugin(['public/js']),
+    //new CleanWebpackPlugin(['public/js']),
     new HtmlWebpackPlugin({
       title: 'Output Management'
     })

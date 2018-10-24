@@ -127,3 +127,13 @@ legend {
     margin-top: 0px;
     margin-bottom: 0px;
 }
+
+.well {
+    width: 180px;
+    text-align: center;
+    width:50%;
+    margin: 0px auto;
+}
+.well #hint ={
+  color:#999;
+}
